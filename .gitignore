@@ -8,7 +8,11 @@ env/
 .git/
 *..git
 
-# Archivos de compilación
+# Archivos de compilación y otros
+chroma_db/
 *.pyc
 *.pyo
 __pycache__/
+
+# Logs y archivos temporales
+*.log
