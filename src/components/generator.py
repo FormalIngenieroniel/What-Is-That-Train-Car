@@ -40,29 +40,31 @@ def generate_response(user_prompt: str, retrieved_context: list):
     if not retrieved_context:
         return "Lo siento, la búsqueda vectorial no encontró información relevante para tu pregunta."
 
-    # Usaremos solo el contexto más relevante para el prompt multimodal
-    best_context = retrieved_context[0]
+    # 1. Agrupar TODAS las descripciones recuperadas en un solo bloque de texto.
+    context_descriptions_text = ""
+    for i, context in enumerate(retrieved_context):
+        context_descriptions_text += f"--- CONTEXTO {i+1} (Archivo: {context['filename']}, Score: {context['relevance_score']:.2f}) ---\n"
+        context_descriptions_text += f"{context['description']}\n\n"
+        
+    # Usamos la imagen del resultado más relevante, que sigue siendo retrieved_context[0]
+    best_context_for_image = retrieved_context[0]
     
     try:
-        # 1. Preparar la imagen y el texto
-        image_path = best_context['image_path']
+        image_path = best_context_for_image['image_path']
         image = Image.open(image_path)
+        filename = best_context_for_image['filename']
         
-        context_description = best_context['description']
-        filename = best_context['filename']
-        
-        # 2. Formular el prompt final que incluye el contexto de la búsqueda
+        # 2. Formular el prompt final
         formatted_prompt = f"""
         PREGUNTA DEL USUARIO: "{user_prompt}"
 
-        CONTEXTO RECUPERADO (Texto):
-        Descripción del archivo '{filename}' (Score de Relevancia: {best_context['relevance_score']:.2f}):
-        {context_description}
+        CONTEXTO RECUPERADO (Texto - Contiene {len(retrieved_context)} resultados):
+        {context_descriptions_text}
 
-        IMAGEN RECUPERADA:
-        (La imagen adjunta es el archivo '{filename}')
+        IMAGEN ADJUNTA:
+        (La imagen adjunta es el archivo '{filename}', el mejor resultado vectorial. Analiza el texto recuperado para determinar si este archivo O CUALQUIER OTRO CONTEXTO TEXTUAL de la lista responde a la pregunta.)
 
-        Responde la pregunta basándote en esta información y en la IMAGEN.
+        Responde la pregunta basándote en la IMAGEN Y/O el CONTEXTO RECUPERADO. Si un contexto de texto es mejor, úsalo, pero siempre menciona el nombre del archivo asociado.
         """
         
         # 3. Construir la solicitud multimodal (Texto + Imagen)
