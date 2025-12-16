@@ -106,4 +106,4 @@ To scientifically compare both methods, we use the **Ragas** framework with a "J
 
 ## 👨‍💻 Author
 
-Project developed for the study of **Multimodal Information Retrieval Systems**.
+Project developed by **Daniel Bernal**.
