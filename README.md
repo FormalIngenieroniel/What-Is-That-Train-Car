@@ -92,37 +92,6 @@ To scientifically compare both methods, we use the **Ragas** framework with a "J
 
 ---
 
-## 🔧 Installation & Requirements
-
-1.  **Clone the repository**:
-    ```bash
-    git clone <repo-url>
-    ```
-2.  **Install Dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(Ensure you have `chromadb`, `langchain`, `langgraph`, `networkx`, `ragas`, `google-genai` installed)*.
-
-3.  **Set up Environment**:
-    Export your Google Gemini API Key:
-    ```bash
-    export GEMINI_API_KEY="YOUR_API_KEY_HERE"
-    ```
-
-4.  **Run Ingestion (First Time Only)**:
-    ```bash
-    python src/ingestion/ingestion_chroma.py
-    python src/ingestion/ingestion_langgraph.py
-    ```
-
-5.  **Run Main Application**:
-    ```bash
-    python main.py
-    ```
-
----
-
 ## 📊 Project Status
 
 -   ✅ **Vector Ingestion & Retrieval**: Fully operational with CLIP + ChromaDB.
